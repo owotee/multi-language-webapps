@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Multi-Language Web Apps Platform</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #eef6ff, #f8fbff);
+      color: #1f2937;
+    }
+
+    .hero {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 60px 24px 30px;
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #dbeafe;
+      color: #1d4ed8;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: 2.5rem;
+      color: #0f172a;
+    }
+
+    .subtitle {
+      max-width: 760px;
+      margin: 0 auto;
+      color: #475569;
+      line-height: 1.7;
+      font-size: 1.05rem;
+    }
+
+    .grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 30px 24px 60px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 22px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 36px rgba(0,0,0,0.12);
+    }
+
+    .lang {
+      font-size: 0.85rem;
+      font-weight: bold;
+      color: #2563eb;
+      background: #eff6ff;
+      padding: 6px 10px;
+      border-radius: 999px;
+      width: fit-content;
+    }
+
+    .card h2 {
+      margin: 0;
+      font-size: 1.35rem;
+      color: #0f172a;
+    }
+
+    .card p {
+      margin: 0;
+      color: #475569;
+      line-height: 1.6;
+      flex-grow: 1;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .btn {
+      display: inline-block;
+      text-decoration: none;
+      background: #2563eb;
+      color: white;
+      border-radius: 10px;
+      padding: 11px 16px;
+      font-size: 0.95rem;
+      font-weight: bold;
+      transition: 0.2s ease;
+    }
+
+    .btn:hover {
+      background: #1d4ed8;
+    }
+
+    .btn.secondary {
+      background: #e2e8f0;
+      color: #0f172a;
+    }
+
+    .btn.secondary:hover {
+      background: #cbd5e1;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 0 24px 40px;
+      color: #64748b;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 640px) {
+      h1 {
+        font-size: 2rem;
+      }
+
+      .actions {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <section class="hero">
+    <div class="badge">AWS EC2 + SQLite + 5 Languages</div>
+    <h1>Multi-Language Web Apps Platform</h1>
+    <p class="subtitle">
+      This project showcases five functional web applications built with different programming languages,
+      all deployed on a single AWS EC2 instance with SQLite databases to store user input.
+    </p>
+  </section>
+
+  <section class="grid">
+    <div class="card">
+      <div class="lang">Python + Flask</div>
+      <h2>Contact Form App</h2>
+      <p>Collects name, email, and message from users and stores submissions in a SQLite database.</p>
+      <div class="actions">
+        <a class="btn" href="http://52.73.214.214:5001" target="_blank">Open App</a>
+        <a class="btn secondary" href="http://52.73.214.214:5001/entries" target="_blank">View Entries</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="lang">Node.js + Express</div>
+      <h2>Feedback Form App</h2>
+      <p>Collects user feedback with name, rating, and comment, then displays saved records in a dashboard.</p>
+      <div class="actions">
+        <a class="btn" href="http://52.73.214.214:5002" target="_blank">Open App</a>
+        <a class="btn secondary" href="http://52.73.214.214:5002/feedback" target="_blank">View Feedback</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="lang">PHP + SQLite</div>
+      <h2>Newsletter Signup App</h2>
+      <p>Allows users to sign up for a newsletter using name, email, and interest fields.</p>
+      <div class="actions">
+        <a class="btn" href="http://52.73.214.214:5003" target="_blank">Open App</a>
+        <a class="btn secondary" href="http://52.73.214.214:5003/?page=list" target="_blank">View Signups</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="lang">Ruby + Sinatra</div>
+      <h2>Event Registration App</h2>
+      <p>Stores event registrations with attendee name, email, and selected event name.</p>
+      <div class="actions">
+        <a class="btn" href="http://52.73.214.214:5004" target="_blank">Open App</a>
+        <a class="btn secondary" href="http://52.73.214.214:5004/registrations" target="_blank">View Registrations</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="lang">Java + Spark</div>
+      <h2>Job Inquiry App</h2>
+      <p>Collects job inquiries with applicant name, email, and role of interest.</p>
+      <div class="actions">
+        <a class="btn" href="http://52.73.214.214:5005" target="_blank">Open App</a>
+        <a class="btn secondary" href="http://52.73.214.214:5005/inquiries" target="_blank">View Inquiries</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer">
+    Built on one AWS EC2 instance for a simple and cost-efficient multi-language deployment.
+  </div>
+
+</body>
+</html>
