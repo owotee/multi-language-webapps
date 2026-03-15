@@ -1,0 +1,8 @@
+nohup: ignoring input
+[Sun Mar 15 11:34:11 2026] PHP 8.5.3 Development Server (http://0.0.0.0:5003) started
+[Sun Mar 15 11:34:20 2026] 108.254.90.178:52846 Accepted
+[Sun Mar 15 11:34:20 2026] 108.254.90.178:52846 [200]: GET /
+[Sun Mar 15 11:34:20 2026] 108.254.90.178:52846 Closing
+[Sun Mar 15 11:34:21 2026] 108.254.90.178:53743 Accepted
+[Sun Mar 15 11:34:21 2026] 108.254.90.178:53743 [200]: GET /favicon.ico
+[Sun Mar 15 11:34:21 2026] 108.254.90.178:53743 Closing
