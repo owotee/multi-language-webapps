@@ -1,412 +1,317 @@
-# Terraform AWS Infrastructure as Code Project
-
-This project provisions a complete AWS multi-tier environment using Terraform. The infrastructure includes networking, compute, and database resources configured entirely through Infrastructure as Code (IaC).
-
-The goal of this project is to demonstrate how Terraform can be used to automate AWS infrastructure deployment in a repeatable, scalable, and organized way.
-
----
-
-# Project Objective
-
-This Terraform project provisions:
-
-- 1 VPC
-- 1 public subnet
-- 2 private subnets
-- 1 Internet Gateway
-- 1 public route table
-- 2 EC2 instances in the public subnet
-- 1 RDS MySQL instance in private subnets
-- Security groups for EC2 and RDS
-- Terraform outputs for important resource information
-
-The architecture follows a simple multi-tier AWS design where EC2 instances act as web/application servers and RDS acts as the backend database layer.
-
----
-
-# Architecture Diagram
-
-``
-                            +----------------------+
-                            |   Terraform Control  |
-                            |      Machine (EC2)   |
-                            | AWS CLI + Terraform  |
-                            +----------+-----------+
-                                       |
-                                       | terraform apply
-                                       v
-+----------------------------------------------------------------------------------+
-|                                     AWS Cloud                                    |
-|                                                                                  |
-|  +-------------------------------------------------------------------------+     |
-|  |                                 VPC                                      |     |
-|  |                            10.0.0.0/16                                   |     |
-|  |                                                                         |     |
-|  |   +---------------------------+         +----------------------------+   |     |
-|  |   |      Public Subnet        |         |     Private Subnet A       |   |     |
-|  |   |       10.0.1.0/24         |         |       10.0.4.0/24          |   |     |
-|  |   |                           |         |                            |   |     |
-|  |   |   +-------------------+   |         |                            |   |     |
-|  |   |   |    EC2 Instance 1 |   |         |                            |   |     |
-|  |   |   |   Web/App Server  |   |         |                            |   |     |
-|  |   |   +-------------------+   |         |                            |   |     |
-|  |   |                           |         |                            |   |     |
-|  |   |   +-------------------+   |         +----------------------------+   |     |
-|  |   |   |    EC2 Instance 2 |   |                                          |     |
-|  |   |   |   Web/App Server  |   |         +----------------------------+   |     |
-|  |   |   +-------------------+   |         |     Private Subnet B       |   |     |
-|  |   |                           |         |       10.0.3.0/24          |   |     |
-|  |   +-------------+-------------+         |                            |   |     |
-|  |                 |                       |   +--------------------+   |   |     |
-|  |                 |                       |   |     RDS MySQL      |   |   |     |
-|  |                 |                       |   |   Private Database |   |   |     |
-|  |                 |                       |   +--------------------+   |   |     |
-|  |                 |                       +----------------------------+   |     |
-|  |                 |                                                       |     |
-|  |         +-------v--------+                                              |     |
-|  |         | Internet       |                                              |     |
-|  |         | Gateway        |                                              |     |
-|  |         +----------------+                                              |     |
-|  |                                                                         |     |
-|  +-------------------------------------------------------------------------+     |
-|                                                                                  |
-+----------------------------------------------------------------------------------+
-
-Traffic Flow:
-- Users connect to EC2 instances over HTTP and HTTPS
-- Administrators connect to EC2 instances over SSH
-- EC2 instances connect to RDS over MySQL port 3306
-- RDS is private and not accessible directly from the internet
-
-- PROJECT STRUCTURE
-- terraform-aws-iac/
-├── main.tf
-├── network.tf
-├── security.tf
-├── ec2.tf
-├── rds.tf
-├── variables.tf
-├── terraform.tfvars
-├── outputs.tf
-├── README.md
-└── .gitignore
-
-
-File Descriptions
-main.tf
-Contains the Terraform provider configuration and common local values.
-network.tf
-Creates the VPC, subnets, Internet Gateway, route table, and route table associations.
-security.tf
-Creates the EC2 and RDS security groups.
-ec2.tf
-Creates two EC2 instances in the public subnet.
-rds.tf
-Creates the RDS MySQL instance and DB subnet group.
-variables.tf
-Declares all variables used in the project.
-terraform.tfvars
-Stores the values assigned to Terraform variables.
-outputs.tf
-Displays important information after deployment.
-README.md
-Contains the project documentation.
-.gitignore
-Prevents sensitive files and Terraform state files from being uploaded to GitHub.
-Resources Created
-Networking Resources
-1 VPC
-1 public subnet
-2 private subnets
-1 Internet Gateway
-1 route table
-1 route table association
-Security Resources
-1 EC2 security group
-1 RDS security group
-Compute Resources
-2 EC2 instances
-Database Resources
-1 RDS MySQL instance
-1 DB subnet group
-Security Configuration
-EC2 Security Group
+# Multi-language-webapps
+Five web applications built with different programming languages deployed on AWS EC2 using SQLite
 
-The EC2 security group allows inbound traffic for:
+Multi-Language Web Applications with EC2 and SQLite
+**Overview**
 
-SSH on port 22
-HTTP on port 80
-HTTPS on port 443
+This project demonstrates the deployment of five simple web applications using different programming languages, all hosted on a single AWS EC2 instance. Each application includes a backend database using SQLite to store and display user input data.
 
-It allows outbound traffic to all destinations.
+The purpose of this project is to show how different backend technologies can be used to build similar web applications while sharing the same cloud infrastructure.
 
-RDS Security Group
+All applications follow the same pattern:
 
-The RDS security group allows inbound traffic for:
+Homepage
 
-MySQL on port 3306
+Form to collect user input
 
-The source for MySQL traffic is restricted to the EC2 security group only.
+Data stored in a database
 
-This prevents the database from being publicly accessible.
+Page displaying submitted data
 
-Prerequisites
+**Architecture**
 
-Before running this project, the following tools must be installed on the control machine:
+Cloud Platform: AWS EC2
+Instance Type: t3.micro
+Database: SQLite
+Server OS: Amazon Linux
 
-Terraform
-AWS CLI
-Git
+All applications run on the same EC2 instance but use different ports.
 
-The AWS account used must have permission to create:
+EC2 Instance
+│
+├── Python Flask App (Port 5001)
+├── Node.js Express App (Port 5002)
+├── PHP App (Port 5003)
+├── Ruby Sinatra App (Port 5004)
+└── Java Spark App (Port 5005)
 
-VPC resources
-Subnets
-Internet Gateway
-Route tables
-EC2 instances
-Security groups
-RDS resources
-DB subnet groups
-Control Machine Setup
+**Application List**
+App	Language	Port	Purpose
+App 1	Python (Flask)	5001	Contact Form
+App 2	Node.js (Express)	5002	Feedback Form
+App 3	PHP	5003	Newsletter Signup
+App 4	Ruby (Sinatra)	5004	Event Registration
+App 5	Java (Spark)	5005	Job Inquiry Form
+Public Application URLs
+Python Contact Form
+http://52.73.214.214:5001
 
-This project uses an EC2 instance as the Terraform control machine.
+Node Feedback Form
+http://52.73.214.214:5002
 
-Example installation steps for Amazon Linux:
+PHP Newsletter Signup
+http://52.73.214.214:5003
 
-sudo yum update -y
-sudo yum install -y git unzip awscli
+Ruby Event Registration
+http://52.73.214.214:5004
 
-curl -LO https://releases.hashicorp.com/terraform/1.7.5/terraform_1.7.5_linux_amd64.zip
-unzip terraform_1.7.5_linux_amd64.zip
-sudo mv terraform /usr/local/bin/
+Java Job Inquiry
+http://52.73.214.214:5005
 
-terraform -v
-aws --version
-git --version
-Clone the Repository
-git clone https://github.com/your-username/terraform-aws-iac.git
-cd terraform-aws-iac
-Terraform Initialization
+**Application Descriptions**
 
-Initialize Terraform:
+**App 1 — Python Contact Form**
 
-terraform init
+Language: Python (Flask)
 
-Format Terraform files:
+Fields collected:
 
-terraform fmt
+Name
 
-Validate Terraform configuration:
+Email
 
-terraform validate
+Message
 
-Review the Terraform execution plan:
+Users can submit a contact message which is stored in the SQLite database and displayed on the admin page.
 
-terraform plan
+Database table:
 
-Deploy the infrastructure:
+entries
+id
+name
+email
+message
 
-terraform apply
+Admin dashboard:
 
-When prompted, type:
+/entries
 
-yes
+**App 2 — Node.js Feedback Form**
 
-Destroy the infrastructure when finished:
+Language: Node.js (Express)
 
-terraform destroy
-Terraform Variables
+Fields collected:
 
-Example terraform.tfvars file:
+Name
 
-aws_region        = "us-east-1"
-project_name      = "iac-assignment"
-environment       = "dev"
+Rating
 
-key_pair_name     = "IAC_Project"
-instance_type     = "t2.micro"
+Comment
 
-allowed_ssh_cidr  = "0.0.0.0/0"
+Users can submit feedback about the website.
 
-db_name           = "appdb"
-db_username       = "admin"
-db_password       = "ChangeMe123!"
-db_instance_class = "db.t3.micro"
+Database table:
 
-Important:
+feedback
+id
+name
+rating
+comment
 
-Do not commit terraform.tfvars to GitHub
-Do not commit passwords or AWS secrets
-Use lowercase names for project and environment values
-Terraform Outputs
+Admin dashboard:
 
-After deployment, Terraform provides outputs such as:
+/feedback
 
-VPC ID
-public subnet ID
-private subnet IDs
-EC2 public IPs
-EC2 public DNS names
-RDS endpoint
-RDS port
+**App 3 — PHP Newsletter Signup**
 
-To display outputs:
+Language: PHP
 
-terraform output
+Fields collected:
 
-Example output:
+Name
 
-ec2_public_ips = [
-  "44.200.xxx.xxx",
-  "100.48.xxx.xxx"
-]
+Email
 
-rds_endpoint = "iac-assignment-dev-db.xxxxxxxxx.us-east-1.rds.amazonaws.com:3306"
-How to Access EC2 Instances
+Interest
 
-Use the private key that matches the AWS key pair used in terraform.tfvars.
+Users can subscribe to a newsletter.
 
-Example:
+Database table:
 
-ssh -i /path/to/IAC_Project.pem ec2-user@<ec2-public-ip>
+signups
+id
+name
+email
+interest
 
-Example with Windows WSL:
+Admin dashboard:
 
-ssh -i "/mnt/c/Users/YourName/Downloads/IAC Project.pem" ec2-user@44.200.xxx.xxx
+?page=list
 
-Replace:
+**App 4 — Ruby Event Registration**
 
-/path/to/IAC_Project.pem
-<ec2-public-ip>
+Language: Ruby (Sinatra)
 
-with the actual values.
+Fields collected:
 
-How to Test the Web Server
+Name
 
-After deployment, test the EC2 instances by opening the public IP in a browser:
+Email
 
-http://<ec2-public-ip>
+Event Name
 
-You can also test from the terminal:
+Users can register for an event.
 
-curl http://<ec2-public-ip>
+Database table:
 
-If Apache is installed and running, the browser should display a simple HTML page.
+registrations
+id
+name
+email
+event_name
 
-To install and start Apache manually:
+Admin dashboard:
 
-sudo dnf install -y httpd
-sudo systemctl enable httpd
-sudo systemctl start httpd
-echo "<h1>Terraform Web Server is working</h1>" | sudo tee /var/www/html/index.html
+/registrations
 
-To verify Apache:
+**App 5 — Java Job Inquiry Form**
 
-sudo systemctl status httpd
-curl http://localhost
-How to Test RDS Connectivity
+Language: Java (Spark Framework)
 
-SSH into one of the EC2 instances and run:
+Fields collected:
 
-mysql -h <rds-endpoint> -u admin -p
+Name
 
-Then enter the database password.
+Email
 
-This confirms:
+Role
 
-the EC2 instance can reach the RDS database
-the RDS security group allows MySQL traffic from EC2 only
-Git Setup
+Users can submit job inquiries.
 
-Initialize Git:
+Database table:
 
-git init
+inquiries
+id
+name
+email
+role
 
-Add all files:
+Admin dashboard:
 
-git add .
+/inquiries
+Project Folder Structure
+multi-apps
+│
+├── python-app
+│   └── app.py
+│
+├── node-app
+│   └── app.js
+│
+├── php-app
+│   └── index.php
+│
+├── ruby-app
+│   └── app.rb
+│
+└── java-app
+    ├── pom.xml
+    └── src/main/java/App.java
+Database Access (Terminal)
 
-Commit the files:
+Each application uses its own SQLite database file.
 
-git commit -m "Initial Terraform AWS IaC project"
+Python
+cd ~/multi-apps/python-app
+sqlite3 python_app.db
+SELECT * FROM entries;
+Node
+cd ~/multi-apps/node-app
+sqlite3 node_app.db
+SELECT * FROM feedback;
+PHP
+cd ~/multi-apps/php-app
+sqlite3 php_app.db
+SELECT * FROM signups;
+Ruby
+cd ~/multi-apps/ruby-app
+sqlite3 ruby_app.db
+SELECT * FROM registrations;
+Java
+cd ~/multi-apps/java-app
+sqlite3 java_app.db
+SELECT * FROM inquiries;
 
-Create a GitHub repository and connect it:
+Exit SQLite with:
 
-git branch -M main
-git remote add origin https://github.com/your-username/terraform-aws-iac.git
-git push -u origin main
-Recommended .gitignore
-.terraform/
-*.tfstate
-*.tfstate.*
-terraform.tfvars
-*.pem
-*.zip
-.crash.log
-Common Issues Encountered
-IAM Permission Errors
+.exit
+Running the Applications
 
-Terraform may fail if the EC2 control machine does not have permission to create AWS resources.
+All applications are started from the EC2 server.
 
-Solution:
+Example commands:
 
-Attach an IAM role to the EC2 control machine
-Use policies such as:
-AmazonEC2FullAccess
-AmazonRDSFullAccess
-Invalid RDS Identifier Names
+Python
+python3 app.py
+Node
+node app.js
+PHP
+php -S 0.0.0.0:5003
+Ruby
+ruby app.rb
+Java
+mvn compile exec:java
+Running Applications in Background
 
-AWS RDS identifiers only allow lowercase letters, numbers, and hyphens.
+To keep applications running after the terminal closes:
 
-Use values like:
+nohup python3 app.py &
+nohup node app.js &
+nohup php -S 0.0.0.0:5003 &
+nohup ruby app.rb &
+nohup mvn exec:java &
 
-iac-assignment-dev-db
+Check active ports:
 
-Do not use spaces or special characters.
+ss -tulpn
 
-RDS Requires Multiple Availability Zones
+Expected ports:
 
-RDS subnet groups require subnets in at least two Availability Zones.
+5001
+5002
+5003
+5004
+5005
+Technologies Used
 
-Solution:
+AWS EC2
 
-Create two private subnets
-Put them in different Availability Zones
-Use both subnets in the DB subnet group
-SSH Key Pair Problems
+Python Flask
 
-SSH will fail if:
+Node.js Express
 
-the wrong key pair name is used
-the .pem file does not exist
-the .pem file has incorrect permissions
+PHP
 
-Correct permissions:
+Ruby Sinatra
 
-chmod 400 /path/to/key.pem
-Browser Page Not Loading
+Java Spark Framework
 
-Possible causes:
+SQLite
 
-Apache not installed
-Apache not running
-Port 80 blocked in security group
-wrong EC2 public IP used
+HTML Forms
+
+Key Features
+
+Five different backend languages
+
+Cloud deployment on AWS
+
+Simple database integration
+
+User input stored and retrieved
+
+Multiple web applications running on one server
+
 Future Improvements
 
-Possible future improvements include:
+Possible improvements for this project include:
 
-Application Load Balancer
-Auto Scaling Group
-NAT Gateway
-Bastion Host
-S3 backend for Terraform state
-DynamoDB state locking
-CloudWatch monitoring
-Route 53 DNS
-HTTPS with ACM certificates
-CI/CD using GitHub Actions
-Conclusion
+Adding authentication for admin dashboards
 
-This project demonstrates how Terraform can be used to provision AWS infrastructure using Infrastructure as Code principles. The environment includes networking, compute, security, and database resources. Using Terraform makes infrastructure easier to deploy, document, manage, and reproduce.
+Using a managed cloud database such as AWS RDS
+
+Adding frontend styling with CSS frameworks
+
+Deploying applications behind Nginx
+
+Using Docker containers for each service
