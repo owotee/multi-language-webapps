@@ -1,6 +1,5 @@
 #!/bin/bash
 set -e
-
 APP_DIR="$HOME/multi-language-webapps"
 
 echo "========================================"
@@ -185,11 +184,11 @@ ss -tulpn | grep -E '5001|5002|5003|5004|5005' || true
 echo "========================================"
 echo "Deployment complete."
 echo "Test the apps in your browser:"
-echo "http://YOUR_PUBLIC_IP:5001"
-echo "http://YOUR_PUBLIC_IP:5002"
-echo "http://YOUR_PUBLIC_IP:5003"
-echo "http://YOUR_PUBLIC_IP:5004"
-echo "http://YOUR_PUBLIC_IP:5005"
+echo "http://$PUBLIC_IP:5001"
+echo "http://$PUBLIC_IP:5002"
+echo "http://$PUBLIC_IP:5003"
+echo "http://$PUBLIC_IP:5004"
+echo "http://$PUBLIC_IP:5005"
 echo "========================================"
 
 # ========================================
