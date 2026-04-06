@@ -7,8 +7,7 @@ pipeline {
         AWS_REGION    = 'us-east-1'
 
         // Set this to the EC2 Name tag of your app server
-        // Example: iac-project-dev-web-1
-        APP_TAG_NAME  = 'iac-project-dev-web-1'
+        APP_TAG_NAME  = 'iac-assignment-dev-web-1'
     }
 
     stages {
