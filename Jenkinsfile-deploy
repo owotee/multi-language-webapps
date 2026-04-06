@@ -58,24 +58,18 @@ pipeline {
             steps {
                 sshagent(credentials: ['app-server-ssh']) {
                     sh '''
-                        ssh -o StrictHostKeyChecking=no ${APP_SERVER} "
-                            if [ ! -d ${APP_DIR} ]; then
-                                git clone ${REPO_URL} ${APP_DIR};
-                            else
-                                cd ${APP_DIR} && git pull;
-                            fi
-                        "
+                         ssh -o StrictHostKeyChecking=no ${APP_SERVER} "mkdir -p ${APP_DIR}"
 
-                        scp -o StrictHostKeyChecking=no deploy-all-apps.sh ${APP_SERVER}:${APP_DIR}/deploy-all-apps.sh
+                            scp -o StrictHostKeyChecking=no -r ./* ${APP_SERVER}:${APP_DIR}/
 
-                        ssh -o StrictHostKeyChecking=no ${APP_SERVER} "
-                            cd ${APP_DIR} &&
-                            sed -i 's/\\r$//' deploy-all-apps.sh &&
-                            chmod +x deploy-all-apps.sh &&
-                            ./deploy-all-apps.sh
-                        "
-                    '''
-                }
+                            ssh -o StrictHostKeyChecking=no ${APP_SERVER} "
+            cd ${APP_DIR} &&
+            sed -i 's/\\r$//' deploy-all-apps.sh &&
+            chmod +x deploy-all-apps.sh &&
+            ./deploy-all-apps.sh
+        "
+    '''
+}
             }
         }
 
