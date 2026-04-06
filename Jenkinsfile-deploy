@@ -55,23 +55,32 @@ pipeline {
         }
 
         stage('Deploy Apps to EC2') {
-            steps {
-                sshagent(credentials: ['app-server-ssh']) {
-                    sh '''
-                         ssh -o StrictHostKeyChecking=no ${APP_SERVER} "mkdir -p ${APP_DIR}"
+    steps {
+        sshagent(credentials: ['app-server-ssh']) {
+            sh '''
+                ssh -o StrictHostKeyChecking=no ${APP_SERVER} "
+                    sudo dnf install -y git || sudo yum install -y git
 
-                            scp -o StrictHostKeyChecking=no -r ./* ${APP_SERVER}:${APP_DIR}/
+                    if [ ! -d ${APP_DIR}/.git ]; then
+                        rm -rf ${APP_DIR}
+                        git clone ${REPO_URL} ${APP_DIR}
+                    else
+                        cd ${APP_DIR} && git pull origin main
+                    fi
+                "
 
-                            ssh -o StrictHostKeyChecking=no ${APP_SERVER} "
-            cd ${APP_DIR} &&
-            sed -i 's/\\r$//' deploy-all-apps.sh &&
-            chmod +x deploy-all-apps.sh &&
-            ./deploy-all-apps.sh
-        "
-    '''
-}
-            }
+                scp -o StrictHostKeyChecking=no deploy-all-apps.sh ${APP_SERVER}:${APP_DIR}/deploy-all-apps.sh
+
+                ssh -o StrictHostKeyChecking=no ${APP_SERVER} "
+                    cd ${APP_DIR} &&
+                    sed -i 's/\\r$//' deploy-all-apps.sh &&
+                    chmod +x deploy-all-apps.sh &&
+                    ./deploy-all-apps.sh
+                "
+            '''
         }
+    }
+}
 
         stage('Show App URLs') {
             steps {
